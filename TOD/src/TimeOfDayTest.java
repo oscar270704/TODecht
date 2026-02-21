@@ -4,18 +4,25 @@ import org.junit.jupiter.api.Test;
 
 class TimeOfDayTest {
 
-	@Test
-	void test() {
-	    TODoefening myTimeOfDay = new TODoefening(16, 31);
-	    assertEquals(16, myTimeOfDay.getHours());
-	    assertEquals(31, myTimeOfDay.getMinutes());
+	
 
+TODoefening myTimeOfDay = new TODoefening(16, 31);
+	    
+	@Test
+	void testConstructor(){
+		assertEquals(16, myTimeOfDay.getHours());
+		assertEquals(31, myTimeOfDay.getMinutes());}
+	    
+	@Test
+	void testSetHours()
+	{	    
 	    myTimeOfDay.setHours(18);
 	    assertEquals(18, myTimeOfDay.getHours());
-	    assertEquals(31, myTimeOfDay.getMinutes());
-
+	    assertEquals(31, myTimeOfDay.getMinutes());}
+	@Test
+	void testSetMinutes() {
 	    myTimeOfDay.setMinutes(30);
-	    assertEquals(18, myTimeOfDay.getHours());
+	    assertEquals(16, myTimeOfDay.getHours());
 	    assertEquals(30, myTimeOfDay.getMinutes());
 	}
 

@@ -9,13 +9,25 @@
  * 
  */
 public class TODoefening{
-	/* inspector */
-	public int getHours()
-		{throw new RuntimeException("Not yet implemented");
-}
+	
+	/** 1.2. De geldige concretetoestandsruimte definiëren
+	 * @invar |0<= hours && hours <= 23
+	 * @invar | 0 <= minutes && minutes <= 59
+	 */
+	private int hours;
+	private int minutes;
+	
+	
+	
+	
+	
+	/* inspector **/
+	public int getHours() 
+		{return hours;} /* 1.3. De abstractierelatie definiëren*/
+
 	/* inspector */
 	public int getMinutes()
-		{throw new RuntimeException("Not yet implemented");}
+		{return minutes;} /* 1.3. De abstractierelatie definiëren*/
 	
 	/** constuctor 
 	 * intitialiseert het object met het gegeven aantal uren en minuten
@@ -35,8 +47,9 @@ public class TODoefening{
 		if (minutes < 0 || 59 < minutes)
 			throw new IllegalArgumentException("minutes out of range");
 
-		throw new RuntimeException("Not yet implemented");}
-	
+		this.hours = hours;
+		this.minutes = minutes;
+	}
 	
 	/** mutator
 	 * @pre |0<= hours && hours <= 23
@@ -45,7 +58,7 @@ public class TODoefening{
 	 * @post |getMinutes() == old(getMinutes())
 	 */
 	public void setHours(int hours) 
-		{throw new RuntimeException("Not yet implemented");}
+		{this.hours = hours;}
 
 	/** mutator
 	 * @pre | 0 <= minutes && minutes <= 59
@@ -54,7 +67,7 @@ public class TODoefening{
 	 * @post |getMinutes() == minutes
 	 */
 	public void setMinutes(int minutes) 
-	{throw new RuntimeException("Not yet implemented");}
+	{this.minutes = minutes;}
 
 
 
