@@ -9,13 +9,20 @@
  * 
  */
 public class TODoefening{
+	
+	/**
+	 * @invar | 0<= minutesSinceMidnight
+	 * @invar | minutesSinceMidnight < 24 * 60
+	 */
+	private int minutesSinceMidnight;
+	
+	
 	/* inspector */
 	public int getHours()
-		{throw new RuntimeException("Not yet implemented");
-}
+		{return  minutesSinceMidnight / 60;}
 	/* inspector */
 	public int getMinutes()
-		{throw new RuntimeException("Not yet implemented");}
+		{return minutesSinceMidnight % 60;}
 	
 	/** constuctor 
 	 * intitialiseert het object met het gegeven aantal uren en minuten
@@ -35,7 +42,8 @@ public class TODoefening{
 		if (minutes < 0 || 59 < minutes)
 			throw new IllegalArgumentException("minutes out of range");
 
-		throw new RuntimeException("Not yet implemented");}
+		minutesSinceMidnight = hours * 60 + minutes;
+	}
 	
 	
 	/** mutator
@@ -45,7 +53,7 @@ public class TODoefening{
 	 * @post |getMinutes() == old(getMinutes())
 	 */
 	public void setHours(int hours) 
-		{throw new RuntimeException("Not yet implemented");}
+		{minutesSinceMidnight = hours * 60 + minutesSinceMidnight % 60;}
 
 	/** mutator
 	 * @pre | 0 <= minutes && minutes <= 59
@@ -54,7 +62,7 @@ public class TODoefening{
 	 * @post |getMinutes() == minutes
 	 */
 	public void setMinutes(int minutes) 
-	{throw new RuntimeException("Not yet implemented");}
+	{minutesSinceMidnight = minutesSinceMidnight / 60 * 60 + minutes ;}
 
 
 
