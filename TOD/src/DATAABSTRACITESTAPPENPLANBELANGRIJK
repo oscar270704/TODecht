@@ -39,3 +39,66 @@ B. DE API IMPLEMENTEREN
 	   abstracte toestand
 
 2.De constructoren en mutatoren implementeren
+
+
+in doorlopende tekst: DATA ABSTRACTIE STAPPENPLAN
+
+A. DE API DEFINIËREN
+
+Bij data-abstractie begin je altijd met het ontwerpen van de API, dus wat de klant van de klasse ziet en mag gebruiken. 
+In deze fase denk je nog niet na over arrays, velden of interne implementatie. Je beschrijft enkel wat het object conceptueel
+ betekent en welke operaties erop mogelijk zijn.
+
+Eerst schrijf je één regel informele documentatie bij de klasse. Als de abstractie mutable is (de toestand kan veranderen), 
+gebruik je een formulering zoals “Elke instantie van deze klasse slaat … op.” Als de abstractie immutable is (de toestand verandert 
+nooit na creatie), gebruik je “Elke instantie van deze klasse stelt … voor.” Dit dwingt je om duidelijk te formuleren wat een object
+ eigenlijk betekent, los van hoe het intern geïmplementeerd wordt.
+
+Daarna definieer je de ruwe abstractetoestandsruimte. Dat betekent dat je bepaalt welke informatie over het object zichtbaar is voor de 
+klant. Dit doe je door de inspectoren te declareren: methodes die informatie teruggeven zonder de toestand te wijzigen. De abstracte toestand 
+is precies wat de klant via deze inspectoren kan observeren. In deze stap schrijf je enkel de methodesignatures en hun contracten, nog geen implementatie.
+
+Vervolgens definieer je de geldige abstractetoestandsruimte. Niet elke denkbare abstracte toestand is geldig. Je beschrijft daarom welke 
+toestanden toegestaan zijn met abstracte toestandsinvarianten. Deze formuleer je in termen van de inspectoren en noteer je als @invar-clausules 
+in de Javadoc van de klasse. Daarnaast geef je bij elke inspector postcondities die beschrijven wat de methode garandeert over haar resultaat. 
+Het is belangrijk dat deze contracten geen cirkel vormen waarbij inspectoren elkaar op een manier gebruiken die tot oneindige recursie leidt. 
+Contracten moeten de abstracte betekenis beschrijven, niet de interne implementatie.
+
+Tot slot declareer en documenteer je de constructoren en mutatoren. Voor elke constructor en elke methode die de toestand kan wijzigen,
+ specificeer je precondities en postcondities. Als een methode de toestand van het object wijzigt, gebruik je @mutates this en beschrijf 
+ je de volledige nieuwe abstracte toestand. Je vermeldt niet alleen wat verandert, maar ook wat behouden blijft. In deze hele fase ontwerp
+  je dus volledig de zichtbare kant van de abstractie, zonder nog iets te implementeren.
+
+B. DE API IMPLEMENTEREN
+
+Pas nadat de API volledig gespecificeerd is, begin je met de implementatie. Hier kies je hoe de abstractie intern wordt voorgesteld.
+
+Eerst definieer je de representatie. Dat start met het definiëren van de ruwe concretetoestandsruimte: je declareert de velden die de 
+interne toestand opslaan. Deze velden zijn niet zichtbaar voor de klant en maken geen deel uit van de abstracte toestand.
+
+Daarna definieer je de geldige concretetoestandsruimte. Dat zijn de representatie-invarianten: voorwaarden die altijd waar moeten
+ zijn voor de interne velden. Ze worden geformuleerd in termen van de velden zelf, niet in termen van inspectoren. Bijvoorbeeld dat 
+ een veld niet null mag zijn, dat lengtes moeten overeenkomen, of dat interne structuren consistent moeten blijven. Deze invarianten zorgen 
+ ervoor dat elke concrete toestand correct is.
+
+Vervolgens definieer je de abstractierelatie. Dit is het kernidee van data-abstractie. De abstractierelatie beschrijft hoe een concrete
+ toestand (de interne velden) overeenkomt met een abstracte toestand (wat de klant ziet via inspectoren). Met andere woorden: hoe moet de 
+ interne representatie geïnterpreteerd worden als de abstracte betekenis van het object? Zodra deze relatie duidelijk is, implementeer je 
+ de inspectoren zodat ze precies deze relatie volgen.
+
+Er gelden twee belangrijke sanity checks. Ten eerste mogen inspectoren voor elke geldige concrete toestand niet crashen. Ten tweede moeten 
+inspectoren een geldige abstracte toestand opleveren. Als dit niet zo is, zijn je representatie-invarianten of je abstractierelatie niet correct geformuleerd.
+
+Daarna implementeer je de constructoren en mutatoren. Elke constructor moet een concrete toestand creëren die voldoet aan de
+ representatie-invarianten en overeenkomt met een geldige abstracte toestand. Elke mutator moet de interne toestand zo aanpassen
+  dat de representatie-invarianten opnieuw gelden en de postcondities van de methode correct zijn volgens de abstractierelatie. Bij
+   immutable abstracties worden “wijzigende” operaties gerealiseerd door een nieuw object terug te geven in plaats van de bestaande toestand aan te passen.
+
+Een zeer belangrijk aandachtspunt is representation exposure dit treedt op wanneer er wijzigbare objecten voorkomen in de interactie tussen klant en code. De interne
+ representatie mag nooit rechtstreeks toegankelijk worden voor de klant. Als een methode een wijzigbaar object teruggeeft, moet ze een defensieve kopie teruggeven.
+  Als een constructor of methode een wijzigbaar object ontvangt van de klant, moet ze dit object kopiëren zodat latere wijzigingen door de klant geen invloed hebben 
+  op de abstractie. In de testsuite moet je expliciet testen dat wijzigingen aan zulke objecten de abstractie niet beïnvloeden.
+
+Samengevat bestaat data-abstractie uit het strikt scheiden van wat de klant ziet (de abstracte toestand en API) en hoe het intern geïmplementeerd wordt 
+(de concrete toestand en representatie). De abstractierelatie vormt de brug tussen beide, en invarianten zorgen ervoor dat zowel de abstracte als de concrete 
+toestanden altijd geldig blijven.
